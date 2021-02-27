@@ -499,7 +499,7 @@ async function starts() {
 					uptime = process.uptime()
 					teks = `*Nome do bot* : ${me.name}\n*Número do bot* : @${me.jid.split('@')[0]}\n*Prefix* : ${prefix}\n*Contato de bloqueio total* : ${blocked.length}\n*O bot está ativo em* : ${kyun(uptime)}\n*Bate Papo Total* : ${totalchat.length}`
 					buffer = await getBuffer(me.imgUrl)
-					client.sendMessage(from, buffer, image, { caption: teks, contextInfo: { mentionedJid: [me.jid] } })
+					client.sendMessage(from, { caption: teks, contextInfo: { mentionedJid: [me.jid] } })
 					} catch(e){
 						console.log('Error :', e)
 						reply('Falha em alguma coisa no info')
@@ -756,7 +756,7 @@ async function starts() {
 					if (!isGroupAdmins) return reply(mess.only.admin)
 					if (!isBotGroupAdmins) return reply(mess.only.Badmin)
 					if (args.length < 1) return reply('Quem você deseja adicionar? Escreva na frente do add')
-					if (args[0].startsWith('55')) return reply('Use o código do país')
+					if (!args[0].startsWith('55')) return reply('Use o código do país')
 					try {
 						num = `${args[0].replace(/ /g, '')}@s.whatsapp.net`
 						client.groupAdd(from, [num])
@@ -1091,7 +1091,7 @@ async function starts() {
 					break
 				case 'afk':
 					tels = body.slice(4)
-					if (args.length < 1) return reply('kakak afk karena apa?')
+					if (args.length < 1) return reply('Por uati ? kkkk')
 					if (!isUser) return reply(mess.only.daftarB)
 					var nom = mek.participant
 					const tag = {
@@ -1180,8 +1180,9 @@ async function starts() {
 						client.updatePresence(from, Presence.composing)
 						data = await fetchJson(`https://brasilapi.com.br/api/cep/v1/${cep}`, { method: 'get' })
 						if (!isUser) return reply(mess.only.daftarB)
+						if (cep < 1) return reply('Precisa de colocar um CEP.\nEx: /ccep 00000000')
 						reply(mess.wait)
-						if(data.state == ''){
+						if(data.state == 'undefined'){
 							hasil = `Erro : ${data.message}`
 						}else{
 							hasil = `Cep : ${data.cep}\nEstado : ${data.state}\nCidade : ${data.city}\nRua : ${data.street}`
@@ -1193,18 +1194,39 @@ async function starts() {
 						client.updatePresence(from, Presence.composing)
 						data = await fetchJson(`https://brasilapi.com.br/api/ddd/v1/${ddd}`, { method: 'get' })
 						if (!isUser) return reply(mess.only.daftarB)
+						if (ddd < 1) return reply('Precisa de colocar um DDD.\nEx: /rddd')
 						reply(mess.wait)
-						if(data.state == ''){
+						if(data.state == 'undefined'){
 							hasil = `Erro : ${data.message}`
 						}else{
-						if (data.cities > 2){
-							hasil = 'Total de cidades :\n'
-							for (let _ of data.cities) {
-								hasil += `${data.cities}\n`
-							}
-						}else{
 							hasil = `DDD : ${ddd}\nEstado : ${data.state}\nCidades : ${data.cities}`
-						}
+						reply(hasil)
+					}
+						break
+						case 'ccnpj':
+						cnpj = body.slice(7)
+						client.updatePresence(from, Presence.composing)
+						data = await fetchJson(`https://brasilapi.com.br/api/cnpj/v1/${cnpj}`, { method: 'get' })
+						if (!isUser) return reply(mess.only.daftarB)
+						if (ddd < 1) return reply('Precisa de colocar um CNPJ\nEx: /ccnpj 000000000000000')
+						reply(mess.wait)
+						if(data.identificador_matriz_filial == 'undefined'){
+							hasil = `Erro : ${data.message}`
+						}else{
+							hasil = 
+								`CNPJ : ${data.cnpj}\n
+								IDENTIFICADOR M.F : ${data.identificador_matriz_filial}\n
+								DESCRIÇÃO M.F : ${data.descricao_matriz_filial}\n
+								RAZÃO SOCIAL : ${data.razao_social}\n
+								NOME FANTASIA : ${data.nome_fantasia}\n
+								SITUAÇÃO CAD. ID : ${data.situacao_cadastral}\n
+								DESCRIÇÃO S. CAD. : ${data.descricao_situacao_cadastral}\n
+								DATA SIT. CAD. : ${data.data_situacao_cadastral}\n
+								CODIGO MUNCIPIO : ${data.codigo_municipio}\n
+								MUNCIPIO : ${data.municipio}\n
+								1 NOME : ${data.qsa[0].nome_socio}\n
+								1 N. DATA ENTRA. : ${data.qsa[0].data_entrada_sociedade}\n
+								BAIRRO : ${data.bairro}\n`
 						reply(hasil)
 					}
 						break

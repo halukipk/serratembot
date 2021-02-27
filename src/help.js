@@ -6,6 +6,7 @@ const help = (prefix) => {
   ❏ Prefix: 「  ${prefix}  」
   ❏ Criador : Guiguicdd
   ❏ Site do Bot: https://serratem.com.br/bot
+  ❏ Link do Bot: 
 
 ◪ *SOBRE*
   │
@@ -79,7 +80,8 @@ const help = (prefix) => {
   ├─ ❏ ${prefix}afk
   ├─ ❏ ${prefix}timer
   ├─ ❏ ${prefix}ccep
-  ├─ ❏ ${prefix}rastreiaddd
+  ├─ ❏ ${prefix}rddd
+  ├─ ❏ ${prefix}ccnpj
 `
 }
 
