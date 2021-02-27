@@ -482,16 +482,6 @@ async function starts() {
 					buffer = await getBuffer(anu.result)
 					client.sendMessage(from, buffer, video, { mimetype: 'video/mp4', filename: `${anu.title}.mp4`, quoted: mek })
 					break
-				case 'trendtwit':
-					client.updatePresence(from, Presence.composing)
-					if (!isUser) return reply(mess.only.daftarB)
-					data = await fetchJson(`https://docs-jojo.herokuapp.com/api/trendingtwitter`, { method: 'get' })
-					teks = '=================\n'
-					for (let i of data.result) {
-						teks += `*Hastag* : ${i.hastag}\n*link* : ${i.link}\n*rank* : ${i.rank}\n*Tweet* : ${i.tweet}\n=================\n`
-					}
-					reply(teks.trim())
-					break
 				case 'testime':
 					setTimeout(() => {
 						client.sendMessage(from, 'Foi', text) // ur cods
@@ -504,10 +494,10 @@ async function starts() {
 					}, 0) // 1000 = 1s,
 					break
 				case 'info':
+					try {
 					me = client.user
 					uptime = process.uptime()
 					teks = `*Nome do bot* : ${me.name}\n*Número do bot* : @${me.jid.split('@')[0]}\n*Prefix* : ${prefix}\n*Contato de bloqueio total* : ${blocked.length}\n*O bot está ativo em* : ${kyun(uptime)}\n*Bate Papo Total* : ${totalchat.length}`
-					try {
 					buffer = await getBuffer(me.imgUrl)
 					client.sendMessage(from, buffer, image, { caption: teks, contextInfo: { mentionedJid: [me.jid] } })
 					} catch(e){
@@ -516,7 +506,7 @@ async function starts() {
 					}
 					break
 				case 'blocklist':
-					teks = 'This is list of blocked number :\n'
+					teks = 'Essa é a lista de bloqueados :\n'
 					for (let block of blocked) {
 						teks += `~> @${block.split('@')[0]}\n`
 					}
@@ -525,43 +515,12 @@ async function starts() {
 					break
 				case 'chatlist':
 					client.updatePresence(from, Presence.composing)
-					teks = 'This is list of chat number :\n'
+					teks = 'Essa é a lista de contatos em mensagem :\n'
 					for (let all of totalchat) {
 						teks += `~> @${all}\n`
 					}
 					teks += `Total : ${totalchat.length}`
 					client.sendMessage(from, teks.trim(), extendedText, { quoted: mek, contextInfo: { "mentionedJid": totalchat } })
-					break
-				case 'animecry':
-					ranp = getRandom('.gif')
-					rano = getRandom('.webp')
-					anu = await fetchJson('https://tobz-api.herokuapp.com/api/cry&apikey=BotWeA', { method: 'get' })
-					if (!isUser) return reply(mess.only.daftarB)
-					if (anu.error) return reply(anu.error)
-					exec(`wget ${anu.result} -O ${ranp} && ffmpeg -i ${ranp} -vcodec libwebp -filter:v fps=fps=15 -lossless 1 -loop 0 -preset default -an -vsync 0 -s 512:512 ${rano}`, (err) => {
-						fs.unlinkSync(ranp)
-						if (err) return reply(mess.error.stick)
-						buffer = fs.readFileSync(rano)
-						client.sendMessage(from, buffer, sticker, { quoted: mek })
-						fs.unlinkSync(rano)
-					})
-					break
-				case 'neonime':
-					client.updatePresence(from, Presence.composing)
-					data = await fetchJson(`https://docs-jojo.herokuapp.com/api/neonime_lastest`, { method: 'get' })
-					if (!isUser) return reply(mess.only.daftarB)
-					teks = '################\n'
-					for (let i of data.result) {
-						teks += `*Title* : ${i.judul}\n*link* : ${i.link}\n*rilis* : ${i.rilis}\n###############\n`
-					}
-					reply(teks.trim())
-					break
-				case 'bpink':
-
-					if (args.length < 1) return reply(`Texto de entrada \nExemplo : ${prefix}Caliph Bot`)
-					data = await getBuffer(`https://docs-jojo.herokuapp.com/api/blackpink?text=${body.slice(7)}`)
-					if (!iUser) return reply(mess.only.daftarB)
-					client.sendMessage(from, data, image, { quoted: mek, caption: body.slice(7) })
 					break
 				case 'tts':
 					client.updatePresence(from, Presence.recording)
@@ -713,11 +672,6 @@ async function starts() {
 					var nomor = pc.split("|")[0];
 					var pesan = pc.split("|")[1];
 					client.sendMessage(nomor + '@s.whatsapp.net', pesan, text)
-					break
-				case 'quotesnime':
-					nimek = await fetchJson('https://animechanapi.xyz/api/quotes/random')
-					hasil = `anime : ${nimek.data.anime}\nCharacter : ${nimek.data.character}\n${nimek.data.quote}`
-					reply(hasil)
 					break
 				case 'setppbot':
 					client.updatePresence(from, Presence.composing)
@@ -879,9 +833,9 @@ async function starts() {
 
 				case 'bugreport':
 					const bug = body.slice(5)
-					if (pesan.length > 300) return client.sendMessage(from, 'Desculpe, o texto é muito longo, máximo de 300 letras', msgType.text, { quoted: mek })
+					if (bug.length > 300) return client.sendMessage(from, 'Desculpe, o texto é muito longo, máximo de 300 letras', msgType.text, { quoted: mek })
 					var nomor = mek.participant
-					teks1 = `*[RELATÓRIO]*\nNúmero : @${nomor.split("@s.whatsapp.net")[0]}\nmensagem : ${pesan}`
+					teks1 = `*[RELATÓRIO]*\nNúmero : @${nomor.split("@s.whatsapp.net")[0]}\nmensagem : ${bug}`
 					var options = {
 						text: teks1,
 						contextInfo: { mentionedJid: [nomor] },
@@ -889,35 +843,11 @@ async function starts() {
 					client.sendMessage(nomerOwner, options, text, { quoted: mek })
 					reply('Problemas foram relatados ao proprietário do BOT, relatórios falsos não serão respondidos.')
 					break
-				case 'apakah':
-					client.updatePresence(from, Presence.composing)
-
-					random = apakah[Math.floor(Math.random() * (apakah.length))]
-
-					hasil = `Pertanyaan : *${body.slice(1)}*\n\nJawaban : *${random}*`
-					reply(hasil)
-					break
-				case 'bisakah':
-					client.updatePresence(from, Presence.composing)
-					if (!isUser) return reply(mess.only.daftarB)
-					random = bisakah[Math.floor(Math.random() * (bisakah.length))]
-
-					hasil = `Pertanyaan : *${body.slice(1)}*\n\nJawaban : *${random}*`
-					reply(hasil)
-					break
 				case 'rate':
 					client.updatePresence(from, Presence.composing)
 					if (!isUser) return reply(mess.only.daftarB)
 					random = `${Math.floor(Math.random() * 100)}`
 					hasil = `Pertanyaan : *${body.slice(1)}*\n\nJawaban : *${random}%*`
-					reply(hasil)
-					break
-				case 'kapankah':
-					client.updatePresence(from, Presence.composing)
-					if (!isUser) return reply(mess.only.daftarB)
-					random = kapankah[Math.floor(Math.random() * (kapankah.length))]
-					random2 = `${Math.floor(Math.random() * 8)}`
-					hasil = `Pertanyaan : *${body.slice(1)}*\n\nJawaban : *${random2} ${random}*`
 					reply(hasil)
 					break
 				case 'closegc':
@@ -1084,67 +1014,12 @@ async function starts() {
 						reply('digite 1 para ativar, 0 para desativar o recurso')
 					}
 					break
-				case 'watak':
+				case 'smsngistro':
 					if (isUser) return reply(mess.only.daftarB)
 					watak = body.slice(1)
 					const wa = ['peny ayang', 'pem urah', 'Pem arah', 'Pem aaf', 'Pen urut', 'Ba ik', 'bap eran', 'Baik Hati', 'peny abar', 'Uw u', 'top deh, poko knya', 'Suka Memb antu']
 					const tak = wa[Math.floor(Math.random() * wa.length)]
 					client.sendMessage(from, 'Questão : *' + watak + '*\n\nResponda : ' + tak, text, { quoted: mek })
-					break
-				case 'hobby':
-					if (isUser) return reply(mess.only.daftarB)
-					hobby = body.slice(1)
-					const hob = ['Memasak', 'Membantu Atok', 'Mabar', 'Nobar', 'Sosmedtan', 'Membantu Orang lain', 'Nonton Anime', 'Nonton Drakor', 'Naik Motor', 'Nyanyi', 'Menari', 'Bertumbuk', 'Menggambar', 'Foto fotoan Ga jelas', 'Maen Game', 'Berbicara Sendiri']
-					const by = hob[Math.floor(Math.random() * hob.length)]
-					client.sendMessage(from, 'Pertanyaan : *' + hobby + '*\n\nResponda : ' + by, text, { quoted: mek })
-					break
-				case 'nsfwneko':
-					try {
-						if (!isNsfw) return reply('❌ *NSFW NAUM ATIVADO* ❌')
-						if (!isUser) return reply(mess.only.daftarB)
-						res = await fetchJson(`https://tobz-api.herokuapp.com/api/nsfwneko?apikey=BotWeA`, { method: 'get' })
-						buffer = await getBuffer(res.result)
-						client.sendMessage(from, buffer, image, { quoted: mek, caption: 'mesum' })
-					} catch (e) {
-						console.log(`Error :`, color(e, 'red'))
-						reply('❌ *ERROR* ❌')
-					}
-					break
-				case 'shota':
-					try {
-						res = await fetchJson(`https://tobz-api.herokuapp.com/api/randomshota?apikey=BotWeA`, { method: 'get' })
-						buffer = await getBuffer(res.result)
-						if (!isUser) return reply(mess.only.daftarB)
-						client.sendMessage(from, buffer, image, { quoted: mek, caption: 'Nich' })
-					} catch (e) {
-						console.log(`Error :`, color(e, 'red'))
-						reply('❌ *ERROR* ❌')
-					}
-					break
-				case 'nsfw':
-					if (!isGroup) return reply(mess.only.group)
-					if (!isGroupAdmins) return reply(mess.only.admin)
-					if (args.length < 1) return reply('digite 1 para ativar')
-					if (Number(args[0]) === 1) {
-						if (isNsfw) return reply('o recurso está ativo')
-						nsfw.push(from)
-						fs.writeFileSync('./database/json/nsfw.json', JSON.stringify(nsfw))
-						reply('❬ SUCESSO ❭ ativado o recurso nsfw neste grupo')
-					} else if (Number(args[0]) === 0) {
-						nsfw.splice(from, 1)
-						fs.writeFileSync('./database/json/nsfw.json', JSON.stringify(nsfw))
-						reply('❬ SUCESSO ❭ desativado o recurso nsfw neste grupo')
-					} else {
-						reply('digite 1 para ativar, 0 para desativar o recurso')
-					}
-					break
-				case 'randomanime':
-					gatauda = body.slice(13)
-					reply(mess.wait)
-					if (!isUser) return reply(mess.only.daftarB)
-					anu = await fetchJson(`https://tobz-api.herokuapp.com/api/randomanime?apikey=BotWeA`, { method: 'get' })
-					buffer = await getBuffer(anu.result)
-					client.sendMessage(from, buffer, image, { quoted: mek })
 					break
 				case 'delete':
 				case 'del':
@@ -1154,13 +1029,13 @@ async function starts() {
 					client.deleteMessage(from, { id: mek.message.extendedTextMessage.contextInfo.stanzaId, remoteJid: from, fromMe: true })
 					break
 
-				case 'truth':
+				case 'verdade':
 					const trut = ['Pernah suka sama siapa aja? berapa lama?', 'Kalau boleh atau kalau mau, di gc/luar gc siapa yang akan kamu jadikan sahabat?(boleh beda/sma jenis)', 'Qual o seu maior medo?', 'pernah suka sama orang dan merasa orang itu suka sama kamu juga?', 'Siapa nama mantan pacar teman mu yang pernah kamu sukai diam diam?', 'pernah gak nyuri uang nyokap atau bokap? Alesanya?', 'hal yang bikin seneng pas lu lagi sedih apa', 'pernah cinta bertepuk sebelah tangan? kalo pernah sama siapa? rasanya gimana brou?', 'pernah jadi selingkuhan orang?', 'hal yang paling ditakutin', 'siapa orang yang paling berpengaruh kepada kehidupanmu', 'hal membanggakan apa yang kamu dapatkan di tahun ini', 'siapa orang yang bisa membuatmu sange', 'siapa orang yang pernah buatmu sange', '(bgi yg muslim) pernah ga solat seharian?', 'Siapa yang paling mendekati tipe pasangan idealmu di sini', 'suka mabar(main bareng)sama siapa?', 'pernah nolak orang? alasannya kenapa?', 'Sebutkan kejadian yang bikin kamu sakit hati yang masih di inget', 'pencapaian yang udah didapet apa aja ditahun ini?', 'kebiasaan terburuk lo pas di sekolah apa?']
 					const ttrth = trut[Math.floor(Math.random() * trut.length)]
 					truteh = await getBuffer(`https://i.ibb.co/305yt26/bf84f20635dedd5dde31e7e5b6983ae9.jpg`)
 					client.sendMessage(from, truteh, image, { caption: '*Truth*\n\n' + ttrth, quoted: mek })
 					break
-				case 'dare':
+				case 'consequencia':
 					const dare = ['Kirim pesan ke mantan kamu dan bilang "aku masih suka sama kamu', 'telfon crush/pacar sekarang dan ss ke pemain', 'pap ke salah satu anggota grup', 'Bilang "KAMU CANTIK BANGET NGGAK BOHONG" ke cowo', 'ss recent call whatsapp', 'drop emot "ðŸ¦„ðŸ’¨" setiap ngetik di gc/pc selama 1 hari', 'kirim voice note bilang can i call u baby?', 'drop kutipan lagu/quote, terus tag member yang cocok buat kutipan itu', 'pake foto sule sampe 3 hari', 'ketik pake bahasa daerah 24 jam', 'ganti nama menjadi "gue anak lucinta luna" selama 5 jam', 'chat ke kontak wa urutan sesuai %batre kamu, terus bilang ke dia "i lucky to hv you', 'prank chat mantan dan bilang " i love u, pgn balikan', 'record voice baca surah al-kautsar', 'bilang "i hv crush on you, mau jadi pacarku gak?" ke lawan jenis yang terakhir bgt kamu chat (serah di wa/tele), tunggu dia bales, kalo udah ss drop ke sini', 'sebutkan tipe pacar mu!', 'snap/post foto pacar/crush', 'teriak gajelas lalu kirim pake vn kesini', 'pap mukamu lalu kirim ke salah satu temanmu', 'kirim fotomu dengan caption, aku anak pungut', 'teriak pake kata kasar sambil vn trus kirim kesini', 'teriak " anjimm gabutt anjimmm " di depan rumah mu', 'ganti nama jadi " BOWO " selama 24 jam', 'Pura pura kerasukan, contoh : kerasukan maung, kerasukan belalang, kerasukan kulkas, dll']
 					const der = dare[Math.floor(Math.random() * dare.length)]
 					tod = await getBuffer(`https://i.ibb.co/305yt26/bf84f20635dedd5dde31e7e5b6983ae9.jpg`)
@@ -1271,17 +1146,17 @@ async function starts() {
 				case 'clone':
 					if (!isGroup) return reply(mess.only.group)
 					if (!isGroupAdmins) return reply(mess.only.admin)
-					if (args.length < 1) return reply('A tag alvo que você deseja clonar')
-					if (mek.message.extendedTextMessage === undefined || mek.message.extendedTextMessage === null) return reply('Tag cvk')
+					if (args.length < 1) return reply('Quem você deseja clonar?')
+					if (mek.message.extendedTextMessage === undefined || mek.message.extendedTextMessage === null) return reply('Marque alguém')
 					mentioned = mek.message.extendedTextMessage.contextInfo.mentionedJid[0]
 					let { jid, id, notify } = groupMembers.find(x => x.jid === mentioned)
 					try {
 						pp = await client.getProfilePicture(id)
 						buffer = await getBuffer(pp)
 						client.updateProfilePicture(botNumber, buffer)
-						mentions(`Foto profile Berhasil di perbarui menggunakan foto profile @${id.split('@')[0]}`, [jid], true)
+						mentions(`Foto do perfil atualizada com sucesso usando a foto do perfil @${id.split('@')[0]}`, [jid], true)
 					} catch (e) {
-						reply('Gagal om')
+						reply('Alguma falha não compreendida')
 					}
 					break
 
@@ -1297,17 +1172,41 @@ async function starts() {
 							reply(err)
 						})
 					} else {
-						reply('Interessante?')
+						reply('Precisa ser um video')
 					}
 					break
-					case 'consultacep':
-						cep = body.slice(13)
+					case 'ccep':
+						cep = body.slice(6)
 						client.updatePresence(from, Presence.composing)
 						data = await fetchJson(`https://brasilapi.com.br/api/cep/v1/${cep}`, { method: 'get' })
 						if (!isUser) return reply(mess.only.daftarB)
 						reply(mess.wait)
-						hasil = `Cep : ${data.cep}\nEstado : ${data.state}\nRua: ${data.street}`
+						if(data.state == ''){
+							hasil = `Erro : ${data.message}`
+						}else{
+							hasil = `Cep : ${data.cep}\nEstado : ${data.state}\nCidade : ${data.city}\nRua : ${data.street}`
+						}
 						reply(hasil)
+						break
+					case 'rddd':
+						ddd = body.slice(6)
+						client.updatePresence(from, Presence.composing)
+						data = await fetchJson(`https://brasilapi.com.br/api/ddd/v1/${ddd}`, { method: 'get' })
+						if (!isUser) return reply(mess.only.daftarB)
+						reply(mess.wait)
+						if(data.state == ''){
+							hasil = `Erro : ${data.message}`
+						}else{
+						if (data.cities > 2){
+							hasil = 'Total de cidades :\n'
+							for (let _ of data.cities) {
+								hasil += `${data.cities}\n`
+							}
+						}else{
+							hasil = `DDD : ${ddd}\nEstado : ${data.state}\nCidades : ${data.cities}`
+						}
+						reply(hasil)
+					}
 						break
 				default:
 					if (isGroup && isSimi && budy != undefined) {

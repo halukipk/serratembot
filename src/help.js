@@ -20,19 +20,13 @@ const help = (prefix) => {
   ├─ ❏ ${prefix}figurinhaanimada
   ├─ ❏ ${prefix}toimg
   ├─ ❏ ${prefix}tomp3
-  ├─ ❏ ${prefix}bpink
   └─ ❏ ${prefix}criarfrase
 ◪ *MEDIA*
   │
-  ├─ ❏ ${prefix}trendtwit
   ├─ ❏ ${prefix}randomkpop
-  └─ ❏ ${prefix}ytsearch
 ◪ *KERANG AJAIB*
   │
-  ├─ ❏ ${prefix}apakah
-  ├─ ❏ ${prefix}kapankah
   ├─ ❏ ${prefix}rate
-  └─ ❏ ${prefix}bisakah
 ◪ *DOWNLOADER*
   │
   ├─ ❏ ${prefix}images
@@ -53,18 +47,16 @@ const help = (prefix) => {
   └─ ❏ ${prefix}igstalk
 ◪ *WIBU*
   │
-  ├─ ❏ ${prefix}neonime
   ├─ ❏ ${prefix}pokemon
   ├─ ❏ ${prefix}waifu
-  ├─ ❏ ${prefix}randomanime
   ├─ ❏ ${prefix}wait
 ◪ *DIVERSÃO*
   │
   ├─ ❏ ${prefix}gantengcek
-  ├─ ❏ ${prefix}watak
+  ├─ ❏ ${prefix}smsnregistro
   ├─ ❏ ${prefix}hobby
-  ├─ ❏ ${prefix}trust
-  ├─ ❏ ${prefix}dare
+  ├─ ❏ ${prefix}verdade
+  ├─ ❏ ${prefix}consequencia
 ◪ *INFORMAÇÃO*
   │
   ├─ ❏ ${prefix}lingua
@@ -86,7 +78,8 @@ const help = (prefix) => {
   ├─ ❏ ${prefix}qrcode
   ├─ ❏ ${prefix}afk
   ├─ ❏ ${prefix}timer
-  ├─ ❏ ${prefix}cep
+  ├─ ❏ ${prefix}ccep
+  ├─ ❏ ${prefix}rastreiaddd
 `
 }
 
