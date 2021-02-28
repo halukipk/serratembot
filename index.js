@@ -1231,9 +1231,7 @@ async function starts() {
 						cd serratembot\n
 						bash install.sh\n
 						npm start`
-					reply('')
 					reply(hasil)
-
 					break
 				default:
 					if (isGroup && isSimi && budy != undefined) {
