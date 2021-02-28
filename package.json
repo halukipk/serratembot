@@ -1,7 +1,7 @@
 {
-  "name": "toiniubot",
-  "version": "0.0.2",
-  "description": "Only termux",
+  "name": "jarvis",
+  "version": "5.0.4",
+  "description": "Apenas Termux",
   "main": "index.js",
   "directories": {
     "lib": "lib"
@@ -17,7 +17,7 @@
     "whatsapp",
     "bot"
   ],
-  "author": "Toin",
+  "author": "Guiguicdd",
   "license": "ISC",
   "dependencies": {
     "@adiwajshing/baileys": "github:adiwajshing/baileys",
@@ -40,10 +40,10 @@
   "devDependencies": {},
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ToinNetuh/ToiniuBot.git"
+    "url": "git+https://github.com/guiguicdd1/serratembot.git"
   },
   "bugs": {
-    "url": "https://github.com/ToinNetuh/ToiniuBot.git"
+    "url": "https://github.com/guiguicdd1/serratembot.git"
   },
-  "homepage": "https://github.com/ToinNetuh/ToiniuBot#readme"
+  "homepage": "https://github.com/guiguicdd1/serratembot#readme"
 }

@@ -1,8 +1,9 @@
-### Oiin sou o Guilherme
+### Opa, sou o Guilherme
 
 
 
 <summary>🍙 Ajuda!</summary>
+⚠ ATENÇÃO! ROBO EM DESENVOLVIMENTO. Podendo haver erros.⚠
 
 ## Ferramentas
 
