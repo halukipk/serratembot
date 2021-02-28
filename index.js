@@ -57,22 +57,6 @@ const { logomaker } = require('./database/menu/logomaker')
 const { toinmenu } = require('./src/toinmenu')
 const { menuadmin } = require('./src/menuadmin')
 const { nsfwmenu } = require('./src/nsfwmenu')
-/*const { mediamenu } = require('./database/menu/mediamenu')
-const { educationmenu } = require('./database/menu/educationmenu')
-const { downloadermenu } = require('./database/menu/downloadermenu')
-const { mememenu } = require('./database/menu/mememenu')
-const { kerangmenu } = require('./database/menu/kerangmenu')
-const { groupmenu } = require('./database/menu/groupmenu')
-const { soundmenu } = require('./database/menu/soundmenu')
-const { musicmenu } = require('./database/menu/musicmenu')
-const { islammenu } = require('./database/menu/islammenu')
-const { stalkmenu } = require('./database/menu/stalkmenu')
-const { wibumenu } = require('./database/menu/wibumenu')
-const { funmenu } = require('./database/menu/funmenu')
-const { informationmenu } = require('./database/menu/informationmenu')
-const { 18+menu } require('./database/menu/18+menu')
-const { ownermenu } require('./database/menu/ownermenu')
-const { othermenu } require('./database/menu/othermenu')*/
 /******END OF MENU INPUT******/
 
 /******LOAD OF VCARD INPUT******/
@@ -338,7 +322,7 @@ async function starts() {
 			switch (command) {
 				case 'help':
 				case 'menu':
-					client.sendMessage(from, help(prefix), text)
+					client.sendMessage(from, help(prefix, botNumber), text)
 					break
 				/*case 'makermenu':
 						hisil = fs.readFileSync('./src/makerimg.jpg')
@@ -498,11 +482,10 @@ async function starts() {
 					break
 				case 'info':
 					try {
-					me = client.user
-					uptime = process.uptime()
-					teks = `*Nome do bot* : ${me.name}\n*Número do bot* : @${me.jid.split('@')[0]}\n*Prefix* : ${prefix}\n*Contato de bloqueio total* : ${blocked.length}\n*O bot está ativo em* : ${kyun(uptime)}\n*Bate Papo Total* : ${totalchat.length}`
-					client.sendMessage(from, { caption: teks, contextInfo: { mentionedJid: [me.jid] } })
-					} catch(e){
+						me = client.user
+						teks = `*Nome do bot* : ${me.name}\n*Número do bot* : @${me.jid.split('@')[0]}\n*Prefix* : ${prefix}\n*Contato de bloqueio total* : ${blocked.length}\n*O bot está ativo em* : 0\n*Bate Papo Total* : ${totalchat.length}`
+						client.sendMessage(from, { caption: teks, contextInfo: { mentionedJid: [me.jid] } })
+					} catch (e) {
 						console.log('Error :', e)
 						reply('Falha em alguma coisa no info')
 					}
@@ -935,7 +918,7 @@ async function starts() {
 							.addOutputOptions([`-vcodec`, `libwebp`, `-vf`, `scale='min(320,iw)':min'(320,ih)':force_original_aspect_ratio=decrease,fps=15, pad=320:320:-1:-1:color=white@0.0, split [a][b]; [a] palettegen=reserve_transparent=on:transparency_color=ffffff [p]; [b][p] paletteuse`])
 							.toFormat('webp')
 							.save(ran)
-					}else{
+					} else {
 						reply(`❌ Você precisa marcar ou enviar uma imagem/gif`)
 					}
 					break
@@ -989,7 +972,8 @@ async function starts() {
 					if (isUser) return reply('você já está registrado')
 					if (args.length < 1) return reply(`Parâmetro incorreto \nCommand : ${prefix}cadastrar nome|idade\nContoh : ${prefix}cadastrar Guilherme|18`)
 					var reg = body.slice(8)
-					if (!from.startsWith('5521')||!from.startsWith('5522')||!from.startsWith('5531')) return reply(`Infelizmente, você ainda não pode usar esse bot.`)
+					var sended = sender.split("@s.whatsapp.net")[0]
+					if (!sended.startsWith('5521') || !sended.startsWith('5522') || !sended.startsWith('5531')) return reply(`Infelizmente, você ainda não pode usar esse bot.`)
 					var jeneng = reg.split("|")[0];
 					var umure = reg.split("|")[1];
 					user.push(sender)
@@ -1179,46 +1163,46 @@ async function starts() {
 						reply('Precisa ser um video')
 					}
 					break
-					case 'ccep':
-						cep = body.slice(6)
-						client.updatePresence(from, Presence.composing)
-						data = await fetchJson(`https://brasilapi.com.br/api/cep/v1/${cep}`, { method: 'get' })
-						if (!isUser) return reply(mess.only.daftarB)
-						if (cep == '') return reply('Precisa de colocar um CEP.\nEx: /ccep 00000000')
-						reply(mess.wait)
-						if(data.state == 'undefined'){
-							hasil = `Erro : ${data.message}`
-						}else{
-							hasil = `Cep : ${data.cep}\nEstado : ${data.state}\nCidade : ${data.city}\nRua : ${data.street}`
-						}
-						reply(hasil)
-						break
-					case 'rddd':
-						ddd = body.slice(6)
-						client.updatePresence(from, Presence.composing)
-						data = await fetchJson(`https://brasilapi.com.br/api/ddd/v1/${ddd}`, { method: 'get' })
-						if (!isUser) return reply(mess.only.daftarB)
-						if (ddd == '') return reply('Precisa de colocar um DDD.\nEx: /rddd')
-						reply(mess.wait)
-						if(data.state == 'undefined'){
-							hasil = `Erro : ${data.message}`
-						}else{
-							hasil = `DDD : ${ddd}\nEstado : ${data.state}\nCidades : ${data.cities}`
+				case 'ccep':
+					cep = body.slice(6)
+					client.updatePresence(from, Presence.composing)
+					data = await fetchJson(`https://brasilapi.com.br/api/cep/v1/${cep}`, { method: 'get' })
+					if (!isUser) return reply(mess.only.daftarB)
+					if (cep == '') return reply('Precisa de colocar um CEP.\nEx: /ccep 00000000')
+					reply(mess.wait)
+					if (data.state == 'undefined') {
+						hasil = `Erro : ${data.message}`
+					} else {
+						hasil = `Cep : ${data.cep}\nEstado : ${data.state}\nCidade : ${data.city}\nRua : ${data.street}`
+					}
+					reply(hasil)
+					break
+				case 'rddd':
+					ddd = body.slice(6)
+					client.updatePresence(from, Presence.composing)
+					data = await fetchJson(`https://brasilapi.com.br/api/ddd/v1/${ddd}`, { method: 'get' })
+					if (!isUser) return reply(mess.only.daftarB)
+					if (ddd == '') return reply('Precisa de colocar um DDD.\nEx: /rddd')
+					reply(mess.wait)
+					if (data.state == 'undefined') {
+						hasil = `Erro : ${data.message}`
+					} else {
+						hasil = `DDD : ${ddd}\nEstado : ${data.state}\nCidades : ${data.cities}`
 						reply(hasil)
 					}
-						break
-						case 'ccnpj':
-						cnpj = body.slice(7)
-						client.updatePresence(from, Presence.composing)
-						data = await fetchJson(`https://brasilapi.com.br/api/cnpj/v1/${cnpj}`, { method: 'get' })
-						if (!isUser) return reply(mess.only.daftarB)
-						if (cnpj == '') return reply('Precisa de colocar um CNPJ\nEx: /ccnpj 000000000000000')
-						reply(mess.wait)
-						if(data.identificador_matriz_filial == 'undefined'){
-							hasil = `Erro : ${data.message}`
-						}else{
-							hasil = 
-								`CNPJ : ${data.cnpj}\n
+					break
+				case 'ccnpj':
+					cnpj = body.slice(7)
+					client.updatePresence(from, Presence.composing)
+					if (cnpj == '') return reply('Precisa de colocar um CNPJ\nEx: /ccnpj 000000000000000')
+					data = await fetchJson(`https://brasilapi.com.br/api/cnpj/v1/${cnpj}`, { method: 'get' })
+					if (!isUser) return reply(mess.only.daftarB)
+					reply(mess.wait)
+					if (data.message) {
+						hasil = `Erro : ${data.message}`
+					} else {
+						hasil =
+							`CNPJ : ${data.cnpj}\n
 								IDENTIFICADOR M.F : ${data.identificador_matriz_filial}\n
 								DESCRIÇÃO M.F : ${data.descricao_matriz_filial}\n
 								RAZÃO SOCIAL : ${data.razao_social}\n
@@ -1233,7 +1217,7 @@ async function starts() {
 								BAIRRO : ${data.bairro}\n`
 						reply(hasil)
 					}
-						break
+					break
 				default:
 					if (isGroup && isSimi && budy != undefined) {
 						console.log(budy)

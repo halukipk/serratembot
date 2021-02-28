@@ -1,12 +1,12 @@
-const help = (prefix) => {
+const help = (prefix, botNumber) => {
 	return `
 「 * Jarvis 5.0* 」
 
 ◪ *informações*
   ❏ Prefix: 「  ${prefix}  」
   ❏ Criador : Guiguicdd
-  ❏ Site do Bot: https://serratem.com.br/bot
-  ❏ Link do Bot: 
+  ❏ Site do Bot: https://nadaainda.com.br
+  ❏ Link do Bot: https://wa.me/${botNumber}
 
 ◪ *SOBRE*
   │
