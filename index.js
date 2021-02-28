@@ -989,15 +989,15 @@ async function starts() {
 					if (isUser) return reply('você já está registrado')
 					if (args.length < 1) return reply(`Parâmetro incorreto \nCommand : ${prefix}cadastrar nome|idade\nContoh : ${prefix}cadastrar Guilherme|18`)
 					var reg = body.slice(8)
-					if (!from.startsWith('5521')) return reply(`Infelizmente, o bot não é permitido em sua localização`)
+					if (!from.startsWith('5521')||!from.startsWith('5522')||!from.startsWith('5531')) return reply(`Infelizmente, você ainda não pode usar esse bot.`)
 					var jeneng = reg.split("|")[0];
 					var umure = reg.split("|")[1];
 					user.push(sender)
 					fs.writeFileSync('./database/json/user.json', JSON.stringify(user))
 					var nomor = "5522981274455";
-					var pesan = `\`\`\`O registro foi bem sucedido com SN: TM08GK8PPHBSJDH10J\`\`\`\n\n\`\`\`Data ${date} ${time}\`\`\`\n\`\`\`[Nama]: ${jeneng}\`\`\`\n\`\`\`[Número]: wa.me/${sender.split("@")[0]}\`\`\`\n\`\`\`[Era]: ${umure}\`\`\`\n\`\`\`Para usar o bot\`\`\`\n\`\`\`Por favor\`\`\`\n\`\`\`enviar ${prefix}help\`\`\`\n\`\`\`\nTotal de usuários ${user.length}\`\`\``;
+					var pesan = `\`\`\`O registro foi bem sucedido com SN: TM08GK8PPHBSJDH10J\`\`\`\n\n\`\`\`Data ${date} ${time}\`\`\`\n\`\`\`[Nome]: ${jeneng}\`\`\`\n\`\`\`[Número]: wa.me/${sender.split("@")[0]}\`\`\`\n\`\`\`[Idade]: ${umure}\`\`\`\n\`\`\`Para usar o bot Por favor enviar: \`\`\`\n\`\`\` ${prefix}help\`\`\`\n\`\`\`\nTotal de usuários ${user.length}\`\`\``;
 					client.sendMessage(nomor + '@s.whatsapp.net', pesan, text)
-					var pesan = `\`\`\`O registro foi bem sucedido com SN: TM08GK8PPHBSJDH10J\`\`\`\n\n\`\`\`Data ${date} ${time}\`\`\`\n\`\`\`[Nama]: ${jeneng}\`\`\`\n\`\`\`[Número]: wa.me/${sender.split("@")[0]}\`\`\`\n\`\`\`[Era]: ${umure}\`\`\`\n\`\`\`Para usar o bot\`\`\`\n\`\`\`Por favor\`\`\`\n\`\`\`enviar ${prefix}help\`\`\`\n\`\`\`\nTotal de usuários ${user.length}\`\`\``;
+					var pesan = `\`\`\`O registro foi bem sucedido com SN: TM08GK8PPHBSJDH10J\`\`\`\n\n\`\`\`Data ${date} ${time}\`\`\`\n\`\`\`[Nome]: ${jeneng}\`\`\`\n\`\`\`[Número]: wa.me/${sender.split("@")[0]}\`\`\`\n\`\`\`[Idade]: ${umure}\`\`\`\nTotal de usuários ${user.length}\`\`\``;
 					client.sendMessage(from, pesan, text, { quoted: mek })
 					break
 				case 'welcome':
