@@ -237,8 +237,8 @@ async function starts() {
 			const from = mek.key.remoteJid
 			const type = Object.keys(mek.message)[0]
 			const { text, extendedText, contact, location, liveLocation, image, video, sticker, document, audio, product } = MessageType
-			const time = moment.tz('Asia/Jakarta').format('DD/MM HH:mm:ss')
-			const date = moment.tz('Asia/Jakarta').format('DD,MM,YY')
+			const time = moment.tz('America/Sao_Paulo').format('DD/MM HH:mm:ss')
+			const date = moment.tz('America/Sao_Paulo').format('DD,MM,YY')
 			body = (type === 'conversation' && mek.message.conversation.startsWith(prefix)) ? mek.message.conversation : (type == 'imageMessage') && mek.message.imageMessage.caption.startsWith(prefix) ? mek.message.imageMessage.caption : (type == 'videoMessage') && mek.message.videoMessage.caption.startsWith(prefix) ? mek.message.videoMessage.caption : (type == 'extendedTextMessage') && mek.message.extendedTextMessage.text.startsWith(prefix) ? mek.message.extendedTextMessage.text : ''
 			budy = (type === 'conversation') ? mek.message.conversation : (type === 'extendedTextMessage') ? mek.message.extendedTextMessage.text : ''
 			const command = body.slice(1).trim().split(/ +/).shift().toLowerCase()
@@ -485,12 +485,15 @@ async function starts() {
 				case 'testime':
 					setTimeout(() => {
 						client.sendMessage(from, 'Foi', text) // ur cods
+					}, 15000) // 1000 = 1s,
+					setTimeout(() => {
+						client.sendMessage(from, '1', text) // ur cods
 					}, 10000) // 1000 = 1s,
 					setTimeout(() => {
-						client.sendMessage(from, '5', text) // ur cods
+						client.sendMessage(from, '2', text) // ur cods
 					}, 5000) // 1000 = 1s,
 					setTimeout(() => {
-						client.sendMessage(from, '10', text) // ur cods
+						client.sendMessage(from, '3', text) // ur cods
 					}, 0) // 1000 = 1s,
 					break
 				case 'info':
@@ -498,7 +501,6 @@ async function starts() {
 					me = client.user
 					uptime = process.uptime()
 					teks = `*Nome do bot* : ${me.name}\n*Número do bot* : @${me.jid.split('@')[0]}\n*Prefix* : ${prefix}\n*Contato de bloqueio total* : ${blocked.length}\n*O bot está ativo em* : ${kyun(uptime)}\n*Bate Papo Total* : ${totalchat.length}`
-					buffer = await getBuffer(me.imgUrl)
 					client.sendMessage(from, { caption: teks, contextInfo: { mentionedJid: [me.jid] } })
 					} catch(e){
 						console.log('Error :', e)
@@ -987,13 +989,15 @@ async function starts() {
 					if (isUser) return reply('você já está registrado')
 					if (args.length < 1) return reply(`Parâmetro incorreto \nCommand : ${prefix}cadastrar nome|idade\nContoh : ${prefix}cadastrar Guilherme|18`)
 					var reg = body.slice(8)
+					if (!from.startsWith('5521')) return reply(`Infelizmente, o bot não é permitido em sua localização`)
 					var jeneng = reg.split("|")[0];
 					var umure = reg.split("|")[1];
 					user.push(sender)
 					fs.writeFileSync('./database/json/user.json', JSON.stringify(user))
 					var nomor = "5522981274455";
-					var pesan = `\`\`\`O registro foi bem sucedido com SN: TM08GK8PPHBSJDH10J\`\`\`\n\n\`\`\`Pada ${date} ${time}\`\`\`\n\`\`\`[Nama]: ${jeneng}\`\`\`\n\`\`\`[Número]: wa.me/${sender.split("@")[0]}\`\`\`\n\`\`\`[Era]: ${umure}\`\`\`\n\`\`\`Para usar o bot\`\`\`\n\`\`\`Por favor\`\`\`\n\`\`\`enviar ${prefix}help\`\`\`\n\`\`\`\nTotal de usuários ${user.length}\`\`\``;
+					var pesan = `\`\`\`O registro foi bem sucedido com SN: TM08GK8PPHBSJDH10J\`\`\`\n\n\`\`\`Data ${date} ${time}\`\`\`\n\`\`\`[Nama]: ${jeneng}\`\`\`\n\`\`\`[Número]: wa.me/${sender.split("@")[0]}\`\`\`\n\`\`\`[Era]: ${umure}\`\`\`\n\`\`\`Para usar o bot\`\`\`\n\`\`\`Por favor\`\`\`\n\`\`\`enviar ${prefix}help\`\`\`\n\`\`\`\nTotal de usuários ${user.length}\`\`\``;
 					client.sendMessage(nomor + '@s.whatsapp.net', pesan, text)
+					var pesan = `\`\`\`O registro foi bem sucedido com SN: TM08GK8PPHBSJDH10J\`\`\`\n\n\`\`\`Data ${date} ${time}\`\`\`\n\`\`\`[Nama]: ${jeneng}\`\`\`\n\`\`\`[Número]: wa.me/${sender.split("@")[0]}\`\`\`\n\`\`\`[Era]: ${umure}\`\`\`\n\`\`\`Para usar o bot\`\`\`\n\`\`\`Por favor\`\`\`\n\`\`\`enviar ${prefix}help\`\`\`\n\`\`\`\nTotal de usuários ${user.length}\`\`\``;
 					client.sendMessage(from, pesan, text, { quoted: mek })
 					break
 				case 'welcome':
@@ -1180,7 +1184,7 @@ async function starts() {
 						client.updatePresence(from, Presence.composing)
 						data = await fetchJson(`https://brasilapi.com.br/api/cep/v1/${cep}`, { method: 'get' })
 						if (!isUser) return reply(mess.only.daftarB)
-						if (cep < 1) return reply('Precisa de colocar um CEP.\nEx: /ccep 00000000')
+						if (cep == '') return reply('Precisa de colocar um CEP.\nEx: /ccep 00000000')
 						reply(mess.wait)
 						if(data.state == 'undefined'){
 							hasil = `Erro : ${data.message}`
@@ -1194,7 +1198,7 @@ async function starts() {
 						client.updatePresence(from, Presence.composing)
 						data = await fetchJson(`https://brasilapi.com.br/api/ddd/v1/${ddd}`, { method: 'get' })
 						if (!isUser) return reply(mess.only.daftarB)
-						if (ddd < 1) return reply('Precisa de colocar um DDD.\nEx: /rddd')
+						if (ddd == '') return reply('Precisa de colocar um DDD.\nEx: /rddd')
 						reply(mess.wait)
 						if(data.state == 'undefined'){
 							hasil = `Erro : ${data.message}`
@@ -1208,7 +1212,7 @@ async function starts() {
 						client.updatePresence(from, Presence.composing)
 						data = await fetchJson(`https://brasilapi.com.br/api/cnpj/v1/${cnpj}`, { method: 'get' })
 						if (!isUser) return reply(mess.only.daftarB)
-						if (ddd < 1) return reply('Precisa de colocar um CNPJ\nEx: /ccnpj 000000000000000')
+						if (cnpj == '') return reply('Precisa de colocar um CNPJ\nEx: /ccnpj 000000000000000')
 						reply(mess.wait)
 						if(data.identificador_matriz_filial == 'undefined'){
 							hasil = `Erro : ${data.message}`
