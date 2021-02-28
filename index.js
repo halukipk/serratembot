@@ -483,7 +483,7 @@ async function starts() {
 				case 'info':
 					try {
 						me = client.user
-						teks = `*Nome do bot* : ${me.name}\n*Número do bot* : @${me.jid.split('@')[0]}\n*Prefix* : ${prefix}\n*Contato de bloqueio total* : ${blocked.length}\n*O bot está ativo em* : 0\n*Bate Papo Total* : ${totalchat.length}`
+						teks = `*Nome do bot* : ${me.name}\n*Número do bot* : @${me.jid.split('@')[0]}\n*Prefix* : ${prefix}\n*Contato de bloqueio total* : ${blocked.length}\n*O bot está ativo em* : 0\n*Bate Papo Total* : 0`
 						client.sendMessage(from, { caption: teks, contextInfo: { mentionedJid: [me.jid] } })
 					} catch (e) {
 						console.log('Error :', e)
@@ -973,7 +973,7 @@ async function starts() {
 					if (args.length < 1) return reply(`Parâmetro incorreto \nCommand : ${prefix}cadastrar nome|idade\nContoh : ${prefix}cadastrar Guilherme|18`)
 					var reg = body.slice(8)
 					var sended = sender.split("@s.whatsapp.net")[0]
-					if (!sended.startsWith('5521') || !sended.startsWith('5522') || !sended.startsWith('5531')) return reply(`Infelizmente, você ainda não pode usar esse bot.`)
+					if (sended.startsWith('5521') == false || sended.startsWith('5522') == false) return reply(`Infelizmente, você ainda não pode usar esse bot.`)
 					var jeneng = reg.split("|")[0];
 					var umure = reg.split("|")[1];
 					user.push(sender)
