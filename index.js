@@ -1218,6 +1218,23 @@ async function starts() {
 						reply(hasil)
 					}
 					break
+				case 'gitclone':
+					cnpj = body.slice(7)
+					client.updatePresence(from, Presence.composing)
+					if (cnpj == '') return reply('Precisa de colocar um CNPJ\nEx: /ccnpj 000000000000000')
+					data = await fetchJson(`https://brasilapi.com.br/api/cnpj/v1/${cnpj}`, { method: 'get' })
+					if (!isUser) return reply(mess.only.daftarB)
+					if (!isOwner) return reply('Num podi')
+					reply('https://github.com/guiguicdd1/serratembot.git')
+					hasil =
+						`git clone https://github.com/guiguicdd1/serratembot.git\n
+						cd serratembot\n
+						bash install.sh\n
+						npm start`
+					reply('')
+					reply(hasil)
+
+					break
 				default:
 					if (isGroup && isSimi && budy != undefined) {
 						console.log(budy)
